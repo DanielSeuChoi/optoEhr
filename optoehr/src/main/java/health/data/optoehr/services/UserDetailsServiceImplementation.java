@@ -18,7 +18,6 @@ import health.data.optoehr.repositories.UserRepository;
 @Service
 public class UserDetailsServiceImplementation implements UserDetailsService {
 
-    @Autowired
     private UserRepository userRepository;
 
     public UserDetailsServiceImplementation(UserRepository userRepository) {

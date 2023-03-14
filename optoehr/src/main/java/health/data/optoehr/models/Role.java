@@ -1,22 +1,13 @@
 package health.data.optoehr.models;
 
 import java.util.List;
-import java.util.Date;
-import javax.persistence.Transient;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.Column;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+
 import javax.persistence.Table;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
 
 @Entity
 @Table(name = "roles")
@@ -55,4 +46,5 @@ public class Role {
     public void setUsers(List<User> users) {
         this.users = users;
     }
+
 }

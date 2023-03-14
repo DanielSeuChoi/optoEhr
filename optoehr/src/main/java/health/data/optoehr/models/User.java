@@ -12,9 +12,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Column;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 
@@ -37,11 +40,27 @@ public class User {
     @Transient
     private String pwConfirmation;
     @Column(updatable = false)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date createdAt;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date updatedAt;
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = new Date();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedAt = new Date();
+    }
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private List<Role> roles;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<Patient> patients;
 
     public User() {
     }
@@ -71,7 +90,7 @@ public class User {
     }
 
     public String getUsername() {
-        return this.username;
+        return username;
     }
 
     public void setUsername(String username) {
@@ -79,7 +98,7 @@ public class User {
     }
 
     public String getPassword() {
-        return this.password;
+        return password;
     }
 
     public void setPassword(String password) {
@@ -87,7 +106,7 @@ public class User {
     }
 
     public String getPwConfirmation() {
-        return this.pwConfirmation;
+        return pwConfirmation;
     }
 
     public void setPwConfirmation(String pwConfirmation) {
@@ -116,6 +135,14 @@ public class User {
 
     public void setRoles(List<Role> roles) {
         this.roles = roles;
+    }
+
+    public List<Patient> getPatients() {
+        return this.patients;
+    }
+
+    public void setPatients(List<Patient> patients) {
+        this.patients = patients;
     }
 
     // public Long getId() {
@@ -174,13 +201,4 @@ public class User {
     // this.roles = roles;
     // }
 
-    @PrePersist
-    protected void onCreate() {
-        this.createdAt = new Date();
-    }
-
-    @PreUpdate
-    protected void onUpdate() {
-        this.updatedAt = new Date();
-    }
 }

@@ -20,13 +20,14 @@ public class WebSecurityConfig {
 
     @Bean
     protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-                .antMatchers("/css/**", "/js/**", "/registration").permitAll()
-                .antMatchers("/admin/**").access("hasRole('ADMIN')")
+        http.csrf().disable().authorizeRequests()
+                .antMatchers("/css/**", "/js/**", "/registration", "/login").permitAll()
+                .antMatchers("/admin/**").access("hasRole('OWNER') or hasRole('ADMIN')")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
                 .loginPage("/login")
+                .usernameParameter("username")
                 .permitAll()
                 .and()
                 .logout()
